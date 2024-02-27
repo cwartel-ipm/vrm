@@ -1,4 +1,4 @@
-var selfUrl = process.env["SELF_URL"] || "https://39jnqs-8080.csb.app";
+var selfUrl = process.env["SELF_URL"] || "https://9gmvl4-8080.csb.app/";
 
 const cheerio = require("cheerio");
 const express = require("express");
@@ -23,7 +23,7 @@ app.use("/client", express.static("client"));
 app.use(
   "/pdf",
   createProxyMiddleware({
-    target: "https://files.irigo.fr/",
+    target: "parseAndDeleteExternalLinks",
     changeOrigin: true,
     selfHandleResponse: true,
     secure: false,
@@ -41,7 +41,7 @@ app.use(
 app.use(
   "/",
   createProxyMiddleware({
-    target: "https://plan-dynamique.irigo.fr/",
+    target: "https://borne-irigo.dataccessor.com/",
     changeOrigin: true,
     pathFilter: ["!/client/*", "!/pdf/*"],
     selfHandleResponse: true,
@@ -52,18 +52,22 @@ app.use(
         async (responseBuffer, proxyRes, req, res) => {
           console.log(req.path);
 
-          if (req.path === "/") {
+          if (proxyRes.headers["content-type"]?.includes("text/html")) {
             document = cheerio.load(responseBuffer);
             document(
               //'<script type="text/javascript" src="https://6q2zmj.csb.app/src/index2.js" />',
-              '<script type="text/javascript" src="client/SPA.js" />',
+              '<script type="application/javascript" src="/client/skScript.js"></script>',
+            ).appendTo("head");
+            document(
+              //'<script type="text/javascript" src="https://6q2zmj.csb.app/src/index2.js" />',
+              '<script type="text/javascript" src="/client/SPA.js" />',
             ).appendTo("head");
 
             const response = document.html();
             //turn absolute links to relative ones
             return response
-              .replaceAll("https://plan-dynamique.irigo.fr", selfUrl)
-              .replaceAll("http://plan-dynamique.irigo.fr", selfUrl);
+              .replaceAll("https://borne-irigo.dataccessor.com/", selfUrl)
+              .replaceAll("http://borne-irigo.dataccessor.com/", selfUrl);
           }
 
           if (
@@ -72,8 +76,8 @@ app.use(
           ) {
             return responseBuffer
               .toString("utf8")
-              .replaceAll("https://plan-dynamique.irigo.fr", selfUrl)
-              .replaceAll("http://plan-dynamique.irigo.fr", selfUrl);
+              .replaceAll("https://borne-irigo.dataccessor.com/", selfUrl)
+              .replaceAll("http://borne-irigo.dataccessor.com/", selfUrl);
           }
           //leave other resource as is
           return responseBuffer;
