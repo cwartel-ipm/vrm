@@ -34,6 +34,9 @@ function parseAndDeleteExternalLinks(node) {
 }
 
 function my_print(src) {
+  let statusDetail = Kiosk.Documentprinting.statusDetail;
+  console.log(statusDetail);
+
   let rawPDFBase64 = fetch(src).then((response) => {
     response.blob().then((blob) => {
       blobToBase64(blob).then((base64) => {
@@ -48,6 +51,7 @@ function my_print(src) {
     });
     let printingSources = Kiosk.DocumentPrinting.sourcesList;
     Kiosk.DocumentPrinting.addEventListener("rawPdfPrint", onRawPdfPrint);
+
     fetch(src).then((response) => {
       response.blob().then((blob) => {
         blobToBase64(blob).then((base64) => {
