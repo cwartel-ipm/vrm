@@ -35,7 +35,7 @@ function parseAndDeleteExternalLinks(node) {
 
 function my_print(src) {
   let statusDetail = Kiosk.Documentprinting.statusDetail;
-  alert(statusDetail);
+  document.querySelector(".w-full").innerHTML = statusDetail;
 
   let rawPDFBase64 = fetch(src).then((response) => {
     response.blob().then((blob) => {
