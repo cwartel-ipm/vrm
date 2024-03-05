@@ -88,7 +88,7 @@ function observePrintButton() {
       my_print(
         node
           .getAttribute("data-pdf")
-          .replaceAll("https://borne-irigo.dataccessor.com/", "/"),
+          .replaceAll("https://borne.irigo.fr/", "/"),
       );
     };
     observePrintButton();
