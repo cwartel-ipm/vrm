@@ -58,7 +58,7 @@ function my_print(src) {
           console.log(base64.split(",")[1]);
           Kiosk.DocumentPrinting.printRawPdf({
             raw: base64.split(",")[1],
-            source: printingSources[0],
+            
           });
         });
       });
