@@ -1,5 +1,5 @@
-var selfUrl = process.env["SELF_URL"] || "https://9gmvl4-8080.csb.app/";
-
+var selfUrl = process.env["SELF_URL"] || "8081--main--ced-ws--ced--ler9018hr1f30.pit-1.try.coder.app";
+                                          
 const cheerio = require("cheerio");
 const express = require("express");
 const {
@@ -38,54 +38,69 @@ app.use(
   }),
 );
 
+const proxyConf={ "/": "start.valenceromansmobilites.fr", "/www": "www.valenceromansmobilites.fr", "/boutique": "boutique.valenceromansmobilites.fr"}
+
+
+for (const [target, origin] of Object.entries(proxyConf)) {
 app.use(
-  "/",
+  target,
   createProxyMiddleware({
-    target: "https://borne-irigo.dataccessor.com/",
+    target: "https://"+origin,
     changeOrigin: true,
-    pathFilter: ["!/client/*", "!/pdf/*"],
+    pathFilter: ["!/client/*", "!/pdf/*","!/www/*", "!/boutique/*"],
     selfHandleResponse: true,
     secure: false,
     logger: console,
     on: {
       proxyRes: responseInterceptor(
         async (responseBuffer, proxyRes, req, res) => {
-          console.log(req.path);
-
+          
           if (proxyRes.headers["content-type"]?.includes("text/html")) {
+            
+            
             document = cheerio.load(responseBuffer);
-            document(
-              //'<script type="text/javascript" src="https://6q2zmj.csb.app/src/index2.js" />',
+            /*document(
               '<script type="application/javascript" src="/client/skScript.js"></script>',
-            ).appendTo("head");
+            ).appendTo("head");*/
             document(
-              //'<script type="text/javascript" src="https://6q2zmj.csb.app/src/index2.js" />',
               '<script type="text/javascript" src="/client/SPA.js" />',
             ).appendTo("head");
+            
+            var response = document.html().toString("utf8");
 
-            const response = document.html();
-            //turn absolute links to relative ones
-            return response
-              .replaceAll("https://borne-irigo.dataccessor.com/", selfUrl)
-              .replaceAll("http://borne-irigo.dataccessor.com/", selfUrl);
+            var repsonse = parseAndDeleteExternalLinks(response);
+
+            for ( [target2, origin2, ] of Object.entries(proxyConf)) {
+              response = response.replaceAll(origin2,selfUrl+target2);
+            }
+            
+            return parseAndDeleteExternalLinks(response);
           }
 
           if (
-            proxyRes.headers["content-type"]?.includes("text/html") ||
-            proxyRes.headers["content-type"]?.includes("application/javascript")
+            proxyRes.headers["content-type"]?.includes("application/javascript") ||
+            proxyRes.headers["content-type"]?.includes("application/x-javascript") ||
+            proxyRes.headers["content-type"]?.includes("application/json")
           ) {
-            return responseBuffer
-              .toString("utf8")
-              .replaceAll("https://borne-irigo.dataccessor.com/", selfUrl)
-              .replaceAll("http://borne-irigo.dataccessor.com/", selfUrl);
+            var response = responseBuffer.toString("utf8");
+
+            for ( [target2, origin2, ] of Object.entries(proxyConf)) {
+              
+              response = response.replaceAll(origin2,selfUrl+target2);
+            }
+            
+            return parseAndDeleteExternalLinks(response);
+            
           }
           //leave other resource as is
+
+
           return responseBuffer;
         },
       ),
     },
   }),
 );
-
-var port = process.env["PORT"] || 8080;
+}
+var port = process.env["PORT"] || 8081;
 app.listen(port, () => {});

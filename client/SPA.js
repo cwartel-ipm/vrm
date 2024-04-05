@@ -104,5 +104,20 @@ function observeEmailInput() {
   });
 }
 
-observePrintButton();
-observeEmailInput();
+//observePrintButton();
+//observeEmailInput();
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  waitForElm(document,"#is-Header-ToggleMenuButton").then(function (node) {
+    node.remove();
+  });
+  waitForElm(document,"#is-Header-RightNav").then(function (node) {
+    node.remove();
+  });
+  waitForElm(document,"#is-Features").then(function (node) {
+    node.style.top = "400px";
+  });
+  waitForElm(document,"#is-Header-Logo-Link").then(function (node) {
+    node.href = "/fr/";
+  });
+});
