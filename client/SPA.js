@@ -104,20 +104,41 @@ function observeEmailInput() {
   });
 }
 
-//observePrintButton();
-//observeEmailInput();
+// function recalls itself when node is found to keep watching for other appearence of this node
+function observeAndDeleteNode(selector) {
+  waitForElm(document,selector).then(function (node) {
+    node.remove();
+    observeAndDeleteNode(selector);
+  });
+  
+}
 
+function observeAndTweakNode(selector,tweakFunction) {
+  waitForElm(document,selector).then(function (node) {
+    tweakFunction(node);
+    observeAndTweakNode(selector,tweakFunction);
+  });
+  
+}
+
+observeAndDeleteNode("#is-Header-ToggleMenuButton");
+observeAndDeleteNode("#is-Header-RightNav");
+observeAndDeleteNode("#is-LineDirection-Timesheet-OptionsButton");
+observeAndDeleteNode(".is-POIInfosContainer-ActionsList.is-row");
+
+
+observeAndTweakNode("#is-Header-Logo", function (node) {
+  node.style.padding = "0 0 0 20px";
+});
+
+// here we're not using observeAnd... because node appear only once i.e. it comes from static HTML
 document.addEventListener("DOMContentLoaded", (event) => {
-  waitForElm(document,"#is-Header-ToggleMenuButton").then(function (node) {
-    node.remove();
-  });
-  waitForElm(document,"#is-Header-RightNav").then(function (node) {
-    node.remove();
-  });
+
   waitForElm(document,"#is-Features").then(function (node) {
     node.style.top = "400px";
   });
+  
   waitForElm(document,"#is-Header-Logo-Link").then(function (node) {
-    node.href = "/fr/";
+    node.href = "#";
   });
 });

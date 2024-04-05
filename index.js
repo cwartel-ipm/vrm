@@ -9,13 +9,14 @@ const {
 
 const app = express();
 
+// could be client side.
 function parseAndDeleteExternalLinks(html) {
   return html
     .toString("utf8")
-    .replaceAll("https://leafletjs.com", "")
-    .replaceAll("https://latitude-cartagene.com", "")
-    .replaceAll("https://www.openstreetmap.org/copyright", "")
-    .replaceAll("https://www.irigo.fr", "");
+    .replaceAll("https://leafletjs.com", "#")
+    .replaceAll("https://latitude-cartagene.com", "#")
+    .replaceAll("https://www.openstreetmap.org/copyright", "#")
+    
 }
 
 app.use("/client", express.static("client"));
