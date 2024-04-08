@@ -135,7 +135,7 @@ observeAndTweakNode("#is-Header-Logo", function (node) {
 document.addEventListener("DOMContentLoaded", (event) => {
 
   waitForElm(document,"#is-Features").then(function (node) {
-    node.style.top = "400px";
+    node.style.top = "700px";
   });
   
   waitForElm(document,"#is-Header-Logo-Link").then(function (node) {
