@@ -139,6 +139,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
   
   waitForElm(document,"#is-Header-Logo-Link").then(function (node) {
-    node.href = "#";
+    node.href = "/fr/";
   });
 });
