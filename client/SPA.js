@@ -131,8 +131,17 @@ observeAndTweakNode("#is-Header-Logo", function (node) {
   node.style.padding = "0 0 0 20px";
 });
 
+
+observeAndTweakNode(".is-Favorite-Item-Button", function (node) {
+  node.onclick = function (e) {e.preventDefault();
+    e.stopPropagation();}
+});
+
 // here we're not using observeAnd... because node appear only once i.e. it comes from static HTML
 document.addEventListener("DOMContentLoaded", (event) => {
+
+ 
+
 
   waitForElm(document,"#is-Features").then(function (node) {
     node.style.top = "350px";

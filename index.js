@@ -13,15 +13,17 @@ const app = express();
 function parseAndDeleteExternalLinks(html) {
   return html
     .toString("utf8")
-    .replaceAll("https://leafletjs.com", "#")
+    .replaceAll("https://openmaptiles.org/", "#")
     .replaceAll("https://latitude-cartagene.com", "#")
     .replaceAll("https://www.openstreetmap.org/copyright", "#")
+    .replaceAll("https://leafletjs.com", "#")
+    
     
 }
 
 app.use("/client", express.static("client"));
 
-app.use(
+/*app.use(
   "/pdf",
   createProxyMiddleware({
     target: "parseAndDeleteExternalLinks",
@@ -37,7 +39,7 @@ app.use(
       ),
     },
   }),
-);
+);*/
 
 const proxyConf={ "/": "start.valenceromansmobilites.fr", "/www": "www.valenceromansmobilites.fr", "/boutique": "boutique.valenceromansmobilites.fr"}
 
@@ -69,8 +71,7 @@ app.use(
             
             var response = document.html().toString("utf8");
 
-            var repsonse = parseAndDeleteExternalLinks(response);
-
+            
             for ( [target2, origin2, ] of Object.entries(proxyConf)) {
               response = response.replaceAll(origin2,selfUrl+target2);
             }
@@ -90,6 +91,7 @@ app.use(
               response = response.replaceAll(origin2,selfUrl+target2);
             }
             
+                        
             return parseAndDeleteExternalLinks(response);
             
           }
