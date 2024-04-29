@@ -13,10 +13,10 @@ const app = express();
 function parseAndDeleteExternalLinks(html) {
   return html
     .toString("utf8")
-    .replaceAll("https://openmaptiles.org/", "#")
-    .replaceAll("https://latitude-cartagene.com", "#")
-    .replaceAll("https://www.openstreetmap.org/copyright", "#")
-    .replaceAll("https://leafletjs.com", "#")
+    .replaceAll("https://openmaptiles.org/", "")
+    .replaceAll("https://latitude-cartagene.com", "")
+    .replaceAll("https://www.openstreetmap.org/copyright", "")
+    .replaceAll("https://leafletjs.com", "")
     
     
 }

@@ -123,8 +123,8 @@ function observeAndTweakNode(selector,tweakFunction) {
 
 observeAndDeleteNode("#is-Header-ToggleMenuButton");
 observeAndDeleteNode("#is-Header-RightNav");
-observeAndDeleteNode("#is-LineDirection-Timesheet-OptionsButton");
-observeAndDeleteNode(".is-POIInfosContainer-ActionsList.is-row");
+//observeAndDeleteNode("#is-LineDirection-Timesheet-OptionsButton");
+//observeAndDeleteNode(".is-POIInfosContainer-ActionsList.is-row");
 
 
 observeAndTweakNode("#is-Header-Logo", function (node) {
